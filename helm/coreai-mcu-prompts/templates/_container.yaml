@@ -1,0 +1,2 @@
+{{- define "coreai-mcu-prompts.container" -}}
+{{- end -}}

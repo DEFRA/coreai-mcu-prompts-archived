@@ -16,12 +16,16 @@ services:
       - ./test:/home/node/test
       - ./scripts:/home/node/scripts
       - ./package.json:/home/node/package.json
-  
-  coreai-mcu-prompts-postgres:
+    environment:
+      AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING:-DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;}
+      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT:-devstoreaccount1}
+
+  coreai-mcu-documents-azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
     ports:
-      - "5432:5432"
+      - "${CORE_AI_PROMPTS_BLOB_PORT:-10000}:10000"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - azurite_data:/data
 
 volumes:
-  postgres_data:

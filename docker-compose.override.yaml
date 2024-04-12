@@ -1,6 +1,4 @@
 version: '3.8'
-# This override file should be used when running this service in isolation
-# to provide dependencies and expose ports for local testing
 
 services:
   coreai-mcu-prompts:
@@ -9,7 +7,7 @@ services:
     image: coreai-mcu-prompts-development
     container_name: coreai-mcu-prompts-development
     depends_on:
-      - coreai-mcu-documents-azurite
+      - coreai-mcu-prompts-azurite
     ports:
       - "3000:3000"
       - "9229:9229"
@@ -20,14 +18,15 @@ services:
       - ./package.json:/home/node/package.json
     environment:
       AZURE_STORAGE_USE_CONNECTION_STRING: ${AZURE_STORAGE_USE_CONNECTION_STRING:-true}
-      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING:-DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;}
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING:-DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://host.docker.internal:10002/devstoreaccount1;}
       AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT:-devstoreaccount1}
 
   coreai-mcu-prompts-azurite:
     image: mcr.microsoft.com/azure-storage/azurite
     ports:
-      - "${CORE_AI_PROMPTS_BLOB_PORT:-10000}:10000"
+      - "${CORE_AI_PROMPTS_TABLE_PORT:-10002}:10002"
     volumes:
       - azurite_data:/data
 
 volumes:
+  azurite_data:

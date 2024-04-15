@@ -10,8 +10,6 @@ const initialiseTable = async () => {
 const calculateRowKey = (name, version) => {
   const escaped = name.toLowerCase().replace(' ', '_')
 
-  console.log(escaped)
-
   return version ? `${escaped}:${version}` : escaped
 }
 

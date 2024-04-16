@@ -30,7 +30,7 @@ const formatModel = (model) => {
 const checkEntityExists = async (partitionKey, rowKey) => {
   try {
     await tableClient.getEntity(partitionKey, rowKey)
-    
+
     return true
   } catch (error) {
     if (error.statusCode === 404) {

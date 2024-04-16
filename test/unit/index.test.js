@@ -9,6 +9,14 @@ jest.mock('../../app/server', () =>
 )
 const createServer = require('../../app/server')
 
+jest.mock('../../app/storage/repos/models', () => ({
+  initialiseTable: jest.fn()
+}))
+
+jest.mock('../../app/storage/repos/prompts', () => ({
+  initialiseTable: jest.fn()
+}))
+
 describe('Server setup', () => {
   let spyExit
   let spyError

@@ -36,7 +36,7 @@ const formatPrompt = (prompt) => {
 const checkEntityExists = async (partitionKey, rowKey) => {
   try {
     const entity = await tableClient.getEntity(partitionKey, rowKey)
-    
+
     return entity
   } catch (error) {
     if (error.statusCode === 404) {
@@ -79,7 +79,7 @@ const getPrompts = async (project, modelId, type) => {
   const reduced = prompts.reduce((acc, prompt) => {
     const formatted = formatPrompt(prompt)
 
-    const existing = acc.find(p => p.name === formatted.name)      
+    let existing = acc.find(p => p.name === formatted.name)
 
     if (existing) {
       if (formatted.version > existing.version) {

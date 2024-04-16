@@ -42,7 +42,7 @@ module.exports = [
       if (!model) {
         return h.response().code(404)
       }
-      
+
       return h.response(model).code(200)
     }
   },

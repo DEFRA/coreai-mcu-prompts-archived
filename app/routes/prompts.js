@@ -41,7 +41,7 @@ module.exports = [
       const { version } = request.query
 
       const prompt = await getPrompt('mcu', model, type, name, version)
-      
+
       if (!prompt) {
         return h.response().code(404)
       }

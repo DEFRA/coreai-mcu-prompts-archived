@@ -24,20 +24,20 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/models/{vendor}/{service}/{modelName}',
+    path: '/models/{vendor}/{service}/{deploymentName}',
     options: {
       validate: {
         params: Joi.object({
           vendor: Joi.string().required(),
           service: Joi.string().required(),
-          modelName: Joi.string().required()
+          deploymentName: Joi.string().required()
         })
       }
     },
     handler: async (request, h) => {
-      const { vendor, service, modelName } = request.params
+      const { vendor, service, deploymentName } = request.params
 
-      const model = await getModel(vendor, service, modelName)
+      const model = await getModel(vendor, service, deploymentName)
 
       if (!model) {
         return h.response().code(404)

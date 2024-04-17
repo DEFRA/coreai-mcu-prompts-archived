@@ -4,7 +4,7 @@ const { addPrompt, getPrompt, getPrompts } = require('../storage/repos/prompts')
 module.exports = [
   {
     method: 'GET',
-    path: '/prompts/mcu',
+    path: '/prompts/{project}',
     options: {
       validate: {
         query: Joi.object({
@@ -14,16 +14,20 @@ module.exports = [
       }
     },
     handler: async (request, h) => {
-      const { modelId, type } = request.query
+      const { project, modelId, type } = request.query
 
-      const prompts = await getPrompts('mcu', modelId, type)
+      const prompts = await getPrompts(project, modelId, type)
+
+      if (prompts.length === 0) {
+        return h.response().code(204)
+      }
 
       return h.response(prompts).code(200)
     }
   },
   {
     method: 'GET',
-    path: '/prompts/mcu/{model}/{type}/{name}',
+    path: '/prompts/{project}/{model}/{type}/{name}',
     options: {
       validate: {
         params: Joi.object({
@@ -37,10 +41,10 @@ module.exports = [
       }
     },
     handler: async (request, h) => {
-      const { model, type, name } = request.params
+      const { project, model, type, name } = request.params
       const { version } = request.query
 
-      const prompt = await getPrompt('mcu', model, type, name, version)
+      const prompt = await getPrompt(project, model, type, name, version)
 
       if (!prompt) {
         return h.response().code(404)
@@ -51,14 +55,14 @@ module.exports = [
   },
   {
     method: 'POST',
-    path: '/prompts/mcu',
+    path: '/prompts',
     options: {
       validate: {
         payload: Joi.object({
+          project: Joi.string().required(),
           name: Joi.string().required(),
           modelId: Joi.string().required(),
           prompt: Joi.string().required(),
-          project: Joi.string().required(),
           type: Joi.string().required().allow('correspondence', 'briefing')
         })
       }

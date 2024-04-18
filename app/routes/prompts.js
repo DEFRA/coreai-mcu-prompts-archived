@@ -17,7 +17,8 @@ module.exports = [
       }
     },
     handler: async (request, h) => {
-      const { project, modelId, type } = request.query
+      const { project } = request.params
+      const { modelId, type } = request.query
 
       const prompts = await getPrompts(project, modelId, type)
 

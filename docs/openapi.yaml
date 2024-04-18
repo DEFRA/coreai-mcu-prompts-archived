@@ -1,0 +1,239 @@
+openapi: "3.0.3"
+info:
+  version: "1.0.0"
+  title: "coreai-mcu-prompts"
+paths:
+  /prompts/{project}:
+    get:
+      tags: ['prompts']
+      parameters:
+        - name: "project"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "Project that the prompt belongs to"
+            enum: ["mcu"]
+        - name: "modelId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            description: "Model Id that prompt should be used with. E.g. azure:openai:adp-gpt3.5"
+        - name: "type"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            enum: ["correspondence", "briefing"]
+      responses:
+        '200':
+          description: "Found prompts"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    project:
+                      type: "string"
+                      description: "Project that the prompt belongs to"
+                      enum: ["mcu"]
+                    name:
+                      type: "string"
+                    modelId:
+                      type: "string"
+                      description: "Model Id that prompt should be used with. E.g. azure:openai:adp-gpt3.5"
+                    prompt:
+                      type: "string"
+                      description: "Prompt text"
+                    type:
+                      type: "string"
+                      enum: ["correspondence", "briefing"]
+                    version:
+                      type: "number"
+        '204':
+          description: "No prompts found"
+  /prompts/{project}/{model}/{type}/{name}:
+    get:
+      tags: ['prompts']
+      parameters:
+        - name: "project"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "Project that the prompt belongs to"
+            enum: ["mcu"]
+        - name: "model"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "Model Id that prompt should be used with. E.g. azure:openai:adp-gpt3.5"
+        - name: "type"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            enum: ["correspondence", "briefing"]
+        - name: "name"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "version"
+          in: "query"
+          schema:
+            type: "number"
+      responses:
+        '200':
+          description: "Prompt found"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  project:
+                    type: "string"
+                    description: "Project that the prompt belongs to"
+                    enum: ["mcu"]
+                  name:
+                    type: "string"
+                  modelId:
+                    type: "string"
+                    description: "Model Id that prompt should be used with. E.g. azure:openai:adp-gpt3.5"
+                  prompt:
+                    type: "string"
+                    description: "Prompt text"
+                  type:
+                    type: "string"
+                    enum: ["correspondence", "briefing"]
+                  version:
+                    type: "number"
+        '404':
+          description: "Prompt not found"
+  /prompts:
+    post:
+      tags: ['prompts']
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                project:
+                  type: "string"
+                  description: "Project that the prompt belongs to"
+                  enum: ["mcu"]
+                name:
+                  type: "string"
+                modelId:
+                  type: "string"
+                  description: "Model Id that prompt should be used with. E.g. azure:openai:adp-gpt3.5"
+                prompt:
+                  type: "string"
+                  description: "Prompt text"
+                type:
+                  type: "string"
+                  enum: ["correspondence", "briefing"]
+      responses:
+        '201':
+          description: "Prompt created"
+  /models:
+    get:
+      tags: ['models']
+      parameters:
+        - name: "deploymentVendor"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            description: "Vendor of the model deployment. E.g. AWS, Azure, GCP"
+      responses:
+        '200':
+          description: "Found models"
+        '204':
+          description: "No models found"
+  /models/{vendor}/{service}/{deploymentName}:
+    get:
+      tags: ['models']
+      parameters:
+        - name: "vendor"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "Vendor of the model deployment. E.g. AWS, Azure, GCP"
+        - name: "service"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "Service of the model deployment. E.g. Sagemaker, OpenAI, Vertex AI"
+        - name: "deploymentName"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            description: "Name of the model deployment. E.g. adp-gpt3.5"
+      responses:
+        '200':
+          description: "Model found"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  modelId:
+                    type: "string"
+                    description: "Model Id that prompt should be used with. E.g. azure:openai:adp-gpt3.5"
+                  deploymentName:
+                    type: "string"
+                    description: "Name of the model deployment"
+                  deploymentVendor:
+                    type: "string"
+                    description: "Vendor of the model deployment. E.g. AWS, Azure, GCP"
+                  deploymentService:
+                    type: "string"
+                    description: "Service of the model deployment. E.g. Sagemaker, OpenAI, Vertex AI"
+                  model:
+                    type: "string"
+                    description: "Name of the model. E.g. GPT-3, BERT, Claude"
+                  type:
+                    type: "string"
+                    enum: ["completion", "chat", "embedding"]
+                    description: "Type of the model deployment"
+        '404':
+          description: "Model not found"
+  /model:
+    post:
+      tags: ['models']
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                deploymentName:
+                  type: "string"
+                  description: "Name of the model deployment"
+                deploymentVendor:
+                  type: "string"
+                  description: "Vendor of the model deployment. E.g. AWS, Azure, GCP"
+                deploymentService:
+                  type: "string"
+                  description: "Service of the model deployment. E.g. Sagemaker, OpenAI, Vertex AI"
+                model:
+                  type: "string"
+                  description: "Name of the model. E.g. GPT-3, BERT, Claude"
+                type:
+                  type: "string"
+                  enum: ["completion", "chat", "embedding"]
+                  description: "Type of the model deployment"
+      responses:
+        '201':
+          description: "Model created"
+        '409':
+          description: "Model already exists"

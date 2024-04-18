@@ -1,11 +1,21 @@
 const mockStart = jest.fn()
-jest.mock('../../app/server', () => ({
-  start: mockStart,
-  info: {
-    uri: 'server-uri'
-  }
+jest.mock('../../app/server', () =>
+  jest.fn().mockResolvedValue({
+    start: mockStart,
+    info: {
+      uri: 'server-uri'
+    }
+  })
+)
+const createServer = require('../../app/server')
+
+jest.mock('../../app/storage/repos/models', () => ({
+  initialiseTable: jest.fn()
 }))
-const server = require('../../app/server')
+
+jest.mock('../../app/storage/repos/prompts', () => ({
+  initialiseTable: jest.fn()
+}))
 
 describe('Server setup', () => {
   let spyExit
@@ -24,6 +34,15 @@ describe('Server setup', () => {
 
   test('start the server', async () => {
     require('../../app/index')
-    expect(server.start).toHaveBeenCalled()
+    expect(createServer).toHaveBeenCalled()
+  })
+
+  test('should log error and exit process when server start fails', async () => {
+    const err = new Error('Server start failed')
+    createServer.mockResolvedValue({
+      start: jest.fn().mockRejectedValue(err),
+      info: { uri: 'http://localhost' }
+    })
+    require('../../app/index')
   })
 })

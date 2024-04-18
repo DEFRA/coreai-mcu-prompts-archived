@@ -79,11 +79,12 @@ const getPrompts = async (project, modelId, type) => {
   const reduced = prompts.reduce((acc, prompt) => {
     const formatted = formatPrompt(prompt)
 
-    let existing = acc.find(p => p.name === formatted.name)
+    const existingIndex = acc.findIndex(p => p.name === formatted.name)
+    const existing = acc[existingIndex]
 
-    if (existing) {
+    if (existingIndex !== -1) {
       if (formatted.version > existing.version) {
-        existing = formatted
+        acc[existingIndex] = formatted
       }
     } else {
       acc.push(formatted)

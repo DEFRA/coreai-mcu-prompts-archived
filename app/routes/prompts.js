@@ -7,6 +7,9 @@ module.exports = [
     path: '/prompts/{project}',
     options: {
       validate: {
+        params: Joi.object({
+          project: Joi.string().required()
+        }),
         query: Joi.object({
           modelId: Joi.string().required(),
           type: Joi.string().required()
@@ -31,6 +34,7 @@ module.exports = [
     options: {
       validate: {
         params: Joi.object({
+          project: Joi.string().required(),
           model: Joi.string().required(),
           type: Joi.string().required().allow('correspondence', 'briefing'),
           name: Joi.string().required()

@@ -14,14 +14,14 @@ paths:
             type: "string"
             description: "Project that the prompt belongs to"
             enum: ["mcu"]
-        - name: "modelId"
-          in: "query"
+        - name: "model"
+          in: "path"
           required: true
           schema:
             type: "string"
             description: "Model Id that prompt should be used with. E.g. azure:openai:adp-gpt3.5"
         - name: "type"
-          in: "query"
+          in: "path"
           required: true
           schema:
             type: "string"
@@ -207,7 +207,7 @@ paths:
                     description: "Type of the model deployment"
         '404':
           description: "Model not found"
-  /model:
+  /models:
     post:
       tags: ['models']
       requestBody:

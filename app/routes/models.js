@@ -48,7 +48,7 @@ module.exports = [
   },
   {
     method: 'POST',
-    path: '/model',
+    path: '/models',
     options: {
       validate: {
         payload: Joi.object({

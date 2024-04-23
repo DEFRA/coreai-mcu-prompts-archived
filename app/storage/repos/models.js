@@ -86,9 +86,45 @@ const getModels = async (deploymentVendor) => {
   return models.map(formatModel)
 }
 
+const getAllModels = async () => {
+  const query = tableClient.listEntities()
+
+  const models = []
+
+  for await (const entity of query) {
+    models.push(entity)
+  }
+  models.sort((a, b) => a.PartitionKey - b.PartitionKey)
+
+  const allModels = []
+  let currentVendor = ''
+  let vendorModels = []
+
+  for await (const entity of models) {
+    if (currentVendor !== '' && currentVendor !== entity.partitionKey) {
+      allModels.push({
+        vendor: currentVendor,
+        models: vendorModels.map(formatModel)
+      })
+
+      vendorModels = []
+    }
+
+    vendorModels.push(entity)
+    currentVendor = entity.partitionKey
+  }
+  allModels.push({
+    vendor: currentVendor,
+    models: vendorModels.map(formatModel)
+  })
+
+  return allModels
+}
+
 module.exports = {
   addModel,
   getModel,
   getModels,
+  getAllModels,
   initialiseTable
 }

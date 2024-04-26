@@ -98,7 +98,7 @@ const getAllModels = async () => {
 
   const allModels = []
   let currentVendor = ''
-  let vendorModels = []
+  const vendorModels = []
 
   for await (const entity of models) {
     if (currentVendor !== '' && currentVendor !== entity.partitionKey) {

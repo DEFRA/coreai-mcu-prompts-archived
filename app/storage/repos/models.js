@@ -94,11 +94,11 @@ const getAllModels = async () => {
   for await (const entity of query) {
     models.push(entity)
   }
-  models.sort((a, b) => a.PartitionKey - b.PartitionKey)
+  models.sort((a, b) => a.partitionKey - b.partitionKey)
 
   const allModels = []
-  let currentVendor = ''
   const vendorModels = []
+  let currentVendor = ''
 
   for await (const entity of models) {
     if (currentVendor !== '' && currentVendor !== entity.partitionKey) {

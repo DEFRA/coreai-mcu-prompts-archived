@@ -4,15 +4,8 @@ const { addModel, getModels, getAllModels, getModel } = require('../storage/repo
 module.exports = [{
   method: 'GET',
   path: '/models',
-  options: {
-    validate: {
-      query: Joi.object({
-        deploymentVendor: Joi.string().required()
-      })
-    }
-  },
-  handler: async (request, h) => {
-    const models = await getModels(request.query.deploymentVendor)
+  handler: async (_request, h) => {
+    const models = await getAllModels()
 
     if (models.length === 0) {
       return h.response().code(204)
@@ -23,9 +16,16 @@ module.exports = [{
 },
 {
   method: 'GET',
-  path: '/allmodels',
+  path: '/vendormodels',
+  options: {
+    validate: {
+      query: Joi.object({
+        deploymentVendor: Joi.string().required()
+      })
+    }
+  },
   handler: async (request, h) => {
-    const models = await getAllModels()
+    const models = await getModels(request.query.deploymentVendor)
 
     if (models.length === 0) {
       return h.response().code(204)

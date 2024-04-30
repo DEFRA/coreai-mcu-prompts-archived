@@ -97,7 +97,7 @@ const getAllModels = async () => {
   models.sort((a, b) => a.partitionKey - b.partitionKey)
 
   const allModels = []
-  const vendorModels = []
+  let vendorModels = []
   let currentVendor = ''
 
   for await (const entity of models) {

@@ -18,7 +18,7 @@ const formatModel = (model) => {
   const deployment = model.rowKey.split('|')
 
   return {
-    modelId: `${model.partitionKey}:${model.rowKey}`,
+    modelId: `${model.partitionKey}|${model.rowKey}`,
     deploymentVendor: model.partitionKey,
     deploymentService: deployment[0],
     deploymentName: deployment[1],

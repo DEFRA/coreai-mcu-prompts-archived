@@ -9,13 +9,13 @@ const initialiseTable = async () => {
 
 const enrichModel = (model) => ({
   partitionKey: model.deploymentVendor,
-  rowKey: `${model.deploymentService}:${model.deploymentName}`,
+  rowKey: `${model.deploymentService}|${model.deploymentName}`,
   model: model.model,
   type: model.type
 })
 
 const formatModel = (model) => {
-  const deployment = model.rowKey.split(':')
+  const deployment = model.rowKey.split('|')
 
   return {
     modelId: `${model.partitionKey}:${model.rowKey}`,
@@ -58,7 +58,7 @@ const addModel = async (model) => {
 
 const getModel = async (deploymentVendor, deploymentService, deploymentName) => {
   try {
-    const model = await tableClient.getEntity(deploymentVendor, `${deploymentService}:${deploymentName}`)
+    const model = await tableClient.getEntity(deploymentVendor, `${deploymentService}|${deploymentName}`)
 
     return formatModel(model)
   } catch (error) {

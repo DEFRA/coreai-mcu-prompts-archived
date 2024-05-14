@@ -1,5 +1,6 @@
 storageAccounts:
   - name: 'coreaimcu'
+    owner: 'no'
     tables: 
       - name: 'prompts'
         roleAssignments:

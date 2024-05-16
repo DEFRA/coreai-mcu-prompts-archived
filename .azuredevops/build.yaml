@@ -41,6 +41,7 @@ resources:
 extends:
   template: /pipelines/common-app-build.yaml@DEFRA-ADPPipelineCommon
   parameters:
+    programmeName: "coreai"
     projectName: "coreai-mcu-prompts"
     serviceName: "coreai-mcu-prompts"
     deployFromFeature: ${{ parameters.deployFromFeature }}

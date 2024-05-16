@@ -2,4 +2,5 @@
   value: "{{servicename}}-APPINSIGHTS-CONNECTIONSTRING"
   type: "keyvault"
 - key: AZURE_STORAGE_ACCOUNT
-  value: "sndadpinfst3401coreaimcu"
+  value: "{{servicename}}-AZURE-STORAGE-ACCOUNT"
+  type: "keyvault"

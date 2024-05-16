@@ -1,6 +1,6 @@
 {
   "name": "coreai-mcu-prompts",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "homepage": "github.com?owner=defra&repo=coreai-mcu-prompts&organization=defra",
   "main": "app/index.js",
